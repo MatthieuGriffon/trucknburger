@@ -1,6 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
+##
 ## TrucknBurger Project
+
 
 Description:
 TrucknBurger is a dynamic web application for a fictional food truck specializing in homemade burgers. The project serves as an interactive portfolio showcasing my web development and SEO skills to potential clients. The website allows users to track the food truck's movements across different cities, view the menu, place orders online, and read the latest news and blog posts.
