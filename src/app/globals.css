@@ -20,10 +20,10 @@ body {
   font-family: 'Architects Daughter', cursive;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
-      to bottom,
-      rgb(var(--background-start-rgb)),
-      rgb(var(--background-end-rgb))
-    );
+    to bottom,
+    rgb(var(--background-start-rgb)),
+    rgb(var(--background-end-rgb))
+  );
 }
 
 @layer utilities {
@@ -31,8 +31,41 @@ body {
     text-wrap: balance;
   }
 }
+
 @layer base {
   html {
-    font-family: "Architect Daughter", cursive;
+    font-family: "Architects Daughter", cursive;
   }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  animation: marquee 45s linear infinite;
+  width: 200%;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.whitespace-nowrap {
+    white-space: nowrap;
+}
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  
+}
+
+/* CSS pour le texte défilant */
+.marquee-text {
+  display: flex;
+  animation: marquee 15s linear infinite;
 }
