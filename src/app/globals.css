@@ -1,9 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+html {
+  scroll-behavior: smooth;
+}
 :root {
-  --foreground-rgb: 0, 0, 0;
+  --foreground-rgb: 255, 255, 255;
   --background-start-rgb: 244, 215, 141;
   --background-end-rgb: 210, 145, 83;
 }
@@ -14,8 +16,7 @@
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
-}
-
+} 
 body {
   font-family: 'Architects Daughter', cursive;
   color: rgb(var(--foreground-rgb));

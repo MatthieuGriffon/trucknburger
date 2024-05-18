@@ -47,7 +47,7 @@ const PreOrderMenu: React.FC = () => {
   ];
 
   return (
-    <section className="py-8 bg-[#eedfb5]">
+    <section className="py-8 bg-[#eedfb5] pt-12">
       <h1 className="text-3xl font-bold text-center mb-6 text-black">
         Nos Menus à Pré-commander
       </h1>

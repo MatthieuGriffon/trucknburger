@@ -11,7 +11,7 @@ interface MenuCardProps {
 
 const MenuCard: React.FC<MenuCardProps> = ({ title, description, price, image, imageClassName }) => {
   return (
-    <div className="flex border rounded-lg overflow-hidden shadow-lg p-4 bg-[#d99153]">
+    <div className="flex border rounded-lg overflow-hidden shadow-lg p-4  bg-[#d99153]">
       <div className="flex-shrink-0">
         <Image 
           src={image} 
