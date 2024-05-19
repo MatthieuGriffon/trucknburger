@@ -1,40 +1,74 @@
-import React from 'react';
-import Image from 'next/image';
+"use client";
+
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { useOrderDispatch } from "../app/context/OrderContext";
+import { useState } from "react";
 
 interface MenuCardProps {
-  title: string;
+  id: string;
+  name: string;
   description: string;
-  price: string;
+  price: number;
   image: string;
   imageClassName?: string;
 }
 
-const MenuCard: React.FC<MenuCardProps> = ({ title, description, price, image, imageClassName }) => {
+const MenuCard: React.FC<MenuCardProps> = ({
+  id,
+  name,
+  description,
+  price,
+  image,
+  imageClassName,
+}) => {
+  const dispatch = useOrderDispatch();
+  const [quantity, setQuantity] = useState(0);
+  const router = useRouter();
+
+  const handlePreOrder = () => {
+    dispatch({
+      type: "SET_ITEM",
+      item: { id, name, description, price, image, quantity },
+    });
+    router.push(`/preorder/id=${id}`);
+  };
+
   return (
-    <div className="flex border rounded-lg overflow-hidden shadow-lg p-4  bg-[#d99153]">
+    <div className="flex border rounded-lg overflow-hidden shadow-lg p-4 bg-[#d99153]">
       <div className="flex-shrink-0">
-        <Image 
-          src={image} 
-          alt={title} 
-          className={`object-cover ${imageClassName}`} 
-          width={150} // Ajustez la largeur selon vos besoins
-          height={150} // Ajustez la hauteur selon vos besoins
+        <Image
+          src={image}
+          alt={name}
+          className={`object-cover ${imageClassName}`}
+          width={150}
+          height={150}
         />
       </div>
       <div className="ml-4 flex-grow">
-        <h2 className="text-xl font-bold">{title}</h2>
+        <h2 className="text-xl font-bold">{name}</h2>
         <p className="text-gray-700">{description}</p>
-        <p className="text-white font-semibold mb-2">{price}</p>
-        <button className="flex justify-center w-[50%] m-auto mt-2 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
+        <p className="text-white font-semibold mb-2">{price} €</p>
+        <div>
+          <label htmlFor="quantity">Quantité: </label>
+          <input 
+            id="quantity"
+            type="number"
+            value={quantity}
+            onChange={(e) => setQuantity(Number(e.target.value))}
+            min="0"
+            className="w-16 text-black border rounded-md p-1"
+          />
+        </div>
+        <button
+          className="flex justify-center w-[50%] m-auto mt-2 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
+          onClick={handlePreOrder}
+        >
           Pré-commander
         </button>
       </div>
     </div>
   );
 };
-
-
-
-
 
 export default MenuCard;

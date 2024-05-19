@@ -48,13 +48,13 @@ const Navbar: React.FC = () => {
           } transition-all duration-600`}
         >
           <li className="m-8 hover:text-[#d99153]">
-            <a href="#">Accueil</a>
+            <a href="/#">Accueil</a>
           </li>
           <li className="m-8 hover:text-[#d99153]">
-            <a href="#section1">Menu</a>
+            <a href="/#section1">Menu</a>
           </li>
           <li className="m-8 hover:text-[#d99153]">
-            <a href="#section2">Calendrier</a>
+            <a href="/#section2">Calendrier</a>
           </li>
           <li className="m-8 hover:text-[#d99153]">
             <a href="#">Actualités</a>
@@ -67,6 +67,9 @@ const Navbar: React.FC = () => {
           </li>
           <li className="m-8 hover:text-[#d99153]">
             <a href="#">Contact</a>
+          </li>
+          <li className="m-8 hover:text-[#d99153]">
+            <a href="/cart">Panier</a>
           </li>
         </ul>
       </nav>

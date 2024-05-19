@@ -1,11 +1,12 @@
+import { OrderProvider } from "./context/OrderContext";
+import { CartProvider } from "./context/CartContext";
 import "../styles/font.css";
 import "./globals.css";
 
 import type { Metadata } from "next";
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
-import Footer from "@/components/Footer";
-
+import Footer from "../components/Footer";
 
 export const metadata: Metadata = {
   title: "TrucknBurger",
@@ -14,16 +15,20 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="fr">
       <body>
-      <Header />
-      <Navbar />
-      <main>{children}</main>
-      <Footer />
+        <OrderProvider>
+          <CartProvider>
+            <Header />
+            <Navbar />
+            <main>{children}</main>
+            <Footer />
+          </CartProvider>
+        </OrderProvider>
       </body>
     </html>
   );
