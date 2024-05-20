@@ -2,10 +2,11 @@
 
 import React from "react";
 import { FaCartArrowDown } from "react-icons/fa";
-import { useCart } from "../app/context/CartContext";
+import { useSelector } from 'react-redux';
+import { RootState } from '../app/store';
 
 const Header: React.FC = () => {
-  const { items } = useCart();
+  const items = useSelector((state: RootState) => state.cart.items);
   const itemsCount = items.reduce((acc, item) => acc + item.quantity, 0);
   
   return (

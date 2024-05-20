@@ -1,8 +1,10 @@
-"use client";
+'use client';
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useOrderDispatch } from "../app/context/OrderContext";
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../app/store';
+import { setItem } from  '../app/store/orderSlice';
 import { useState } from "react";
 
 interface MenuCardProps {
@@ -22,15 +24,19 @@ const MenuCard: React.FC<MenuCardProps> = ({
   image,
   imageClassName,
 }) => {
-  const dispatch = useOrderDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [quantity, setQuantity] = useState(0);
   const router = useRouter();
 
   const handlePreOrder = () => {
-    dispatch({
-      type: "SET_ITEM",
-      item: { id, name, description, price, image, quantity },
-    });
+    dispatch(setItem({
+      id,
+      name,
+      description,
+      price,
+      image,
+      quantity,
+    }));
     router.push(`/preorder/id=${id}`);
   };
 

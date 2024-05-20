@@ -1,9 +1,11 @@
-import { OrderProvider } from "./context/OrderContext";
-import { CartProvider } from "./context/CartContext";
+import "../styles/font.css";
+import "./globals.css";
+
 import "../styles/font.css";
 import "./globals.css";
 
 import type { Metadata } from "next";
+import ClientProvider from "../components/ClientProvider";
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -21,14 +23,12 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body>
-        <OrderProvider>
-          <CartProvider>
-            <Header />
-            <Navbar />
-            <main>{children}</main>
-            <Footer />
-          </CartProvider>
-        </OrderProvider>
+        <ClientProvider>
+          <Header />
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </ClientProvider>
       </body>
     </html>
   );
