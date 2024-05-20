@@ -1,15 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useOrder } from "../../context/OrderContext";
-import { useCartDispatch } from "../../context/CartContext";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "../../store";
+import { setItem } from "../../store/orderSlice";
+import { addItem } from "../../store/cartSlice";
 import Image from "next/image";
 import PreOrderMenu from "../../../components/PreOrderMenu";
 
 const PreOrderPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
-  const { item } = useOrder();
-  const cartDispatch = useCartDispatch();
+  const item = useSelector((state: RootState) => state.order.item);
+  const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
 
@@ -22,17 +24,16 @@ const PreOrderPage = ({ params }: { params: { id: string } }) => {
   const handleAddToCart = () => {
     if (item) {
       console.log("Adding item to cart:", item);
-      cartDispatch({
-        type: "ADD_ITEM",
-        item: {
+      dispatch(
+        addItem({
           id: item.id,
           name: item.name,
           description: item.description,
           price: item.price,
           quantity,
           image: item.image,
-        },
-      });
+        })
+      );
     }
   };
 
