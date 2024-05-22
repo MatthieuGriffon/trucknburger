@@ -1,30 +1,21 @@
 import NextAuth from "next-auth";
-import PostgresAdapter from "@auth/pg-adapter";
-import { Pool } from "pg";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import dotenv from 'dotenv';
 import { Adapter } from "next-auth/adapters";
 import bcrypt from 'bcrypt';
-import { compare } from 'bcrypt';  // 
+import pool from "../../../../../src/lib/db"
+import PostgresAdapter from "@auth/pg-adapter";
+
 dotenv.config();
 
-const pool = new Pool({
-  host: process.env.DATABASE_HOST,
-  user: process.env.DATABASE_USER,
-  password: process.env.DATABASE_PASSWORD,
-  database: process.env.DATABASE_NAME,
-  port: parseInt(process.env.PGPORT || '5432', 10),
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
+
+dotenv.config();
 
 interface Credentials {
   email: string;
   password: string;
-  
 }
 
 async function findUserByEmail(email: string) {
@@ -92,7 +83,7 @@ const handler = NextAuth({
         const user = await findUserByEmail(email);
         console.log("User du routes.ts", user)
         if (user) {
-          const isValidPassword = await compare(password, user.password);
+          const isValidPassword = await bcrypt.compare(password, user.password);
           if (isValidPassword) {
             const updatedUser = await updateUserLoginTimestamp(email);
             return updatedUser;
@@ -106,8 +97,9 @@ const handler = NextAuth({
       }
     })
   ],
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: '/auth/signin',
+    signIn: '/auth/signup',
     signOut: '/auth/signout',
     error: '/auth/error',
   },
@@ -130,7 +122,8 @@ const handler = NextAuth({
       return token;
     }
   },
-  secret: process.env.NEXTAUTH_SECRET,
+ 
+
 });
 
 export { handler as GET, handler as POST };

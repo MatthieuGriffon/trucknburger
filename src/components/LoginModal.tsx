@@ -1,27 +1,27 @@
-'use client';
-import React, { useState } from 'react';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const LoginModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await signIn('credentials', {
+    const res = await signIn("credentials", {
       redirect: false,
       email,
       password,
     });
 
     if (res?.error) {
-      setError('Invalid email or password');
+      setError("Invalid email or password");
     } else {
       onClose();
-      router.push('/profile'); // Rediriger vers la page de profil après connexion réussie
+      router.push("/profile"); // Rediriger vers la page de profil après connexion réussie
     }
   };
 
@@ -59,7 +59,7 @@ const LoginModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           </button>
         </form>
         <p className="mt-4">
-          Pas de compte ?{' '}
+          Pas de compte ?{" "}
           <a href="/signup" className="text-blue-500 hover:underline">
             Créer un compte
           </a>
