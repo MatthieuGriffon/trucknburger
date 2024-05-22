@@ -1,5 +1,5 @@
 "use client";
-
+import "../../globals.css";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../store";
@@ -46,7 +46,7 @@ const PreOrderPage = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="flex flex-row w-auto flex-wrap justify-center bg-[#D99153] text-justify">
+    <div className="preorder-menu flex flex-row w-auto flex-wrap justify-center bg-[#D99153] text-justify">
       <div className="w-1/3 m-5 bg-[#D99153] flex flex-col text-center">
         <h1 className="text-xl mb-3">Pré-commander le {item.name}</h1>
         <p className="mb-2">{item.description}</p>
@@ -76,7 +76,7 @@ const PreOrderPage = ({ params }: { params: { id: string } }) => {
           Ajouter au panier
         </button>
       </div>
-      <div className="w-1/2 m-5 flex flex-row text-xs">
+      <div className="w-1/2 m-5 flex flex-col-reverse justify-between items-baseline flex-wrap text-xs text-center custom-preorder-menu-container">
         <PreOrderMenu />
       </div>
     </div>

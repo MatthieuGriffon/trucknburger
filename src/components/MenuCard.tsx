@@ -55,17 +55,7 @@ const MenuCard: React.FC<MenuCardProps> = ({
         <h2 className="text-xl font-bold">{name}</h2>
         <p className="text-gray-700">{description}</p>
         <p className="text-white font-semibold mb-2">{price} €</p>
-        <div>
-          <label htmlFor="quantity">Quantité: </label>
-          <input 
-            id="quantity"
-            type="number"
-            value={quantity}
-            onChange={(e) => setQuantity(Number(e.target.value))}
-            min="0"
-            className="w-16 text-black border rounded-md p-1"
-          />
-        </div>
+        
         <button
           className="flex justify-center w-[50%] m-auto mt-2 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
           onClick={handlePreOrder}

@@ -70,3 +70,7 @@ body {
   display: flex;
   animation: marquee 15s linear infinite;
 }
+
+.custom-preorder-menu-container .preorder-menu {
+  background-color: blueviolet;
+}

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Client } from 'pg';
 import dotenv from 'dotenv';
 
-dotenv.config(); // Charger les variables d'environnement à partir du fichier .env.local
+dotenv.config();
 
 export async function GET(req: NextRequest) {
   const client = new Client({

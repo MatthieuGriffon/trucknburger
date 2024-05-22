@@ -1,14 +1,20 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../store";
 import { removeItem, updateQuantity, updateDrink } from "../store/cartSlice";
 import Image from "next/image";
+import LoginModal from "../../components/LoginModal";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const CartPage: React.FC = () => {
   const items = useSelector((state: RootState) => state.cart.items);
   const dispatch = useDispatch<AppDispatch>();
+  const { data: session } = useSession();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const router = useRouter();
 
   const handleRemoveItem = (id: string) => {
     dispatch(removeItem(id));
@@ -28,6 +34,14 @@ const CartPage: React.FC = () => {
     return items
       .reduce((total, item) => total + item.price * item.quantity, 0)
       .toFixed(2);
+  };
+
+  const handleValidateCart = () => {
+    if (!session) {
+      setIsLoginModalOpen(true);
+    } else {
+      router.push("/profile");
+    }
   };
 
   if (items.length === 0) {
@@ -88,10 +102,10 @@ const CartPage: React.FC = () => {
                       }
                       className="w-3/4 text-black border rounded"
                     >
-                   
+                      <option value="">Choisissez une boisson</option>
                       <option value="eau">Eau</option>
                       <option value="coca">Coca</option>
-                      <option value="jus d&apos;orange">Jus d&apos;orange</option>
+                      <option value="jus d'orange">Jus d&apos;orange</option>
                       <option value="sprite">Sprite</option>
                       <option value="jus de pomme">Jus de pomme</option>
                     </select>
@@ -114,12 +128,15 @@ const CartPage: React.FC = () => {
           <div className="mt-4 text-right">
             <button
               className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700"
-              onClick={() => console.log('Valider le panier')}
+              onClick={handleValidateCart}
             >
               Valider le panier
             </button>
           </div>
         </div>
+        {isLoginModalOpen && (
+          <LoginModal onClose={() => setIsLoginModalOpen(false)} />
+        )}
       </div>
     </div>
   );
