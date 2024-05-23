@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../app/store";
 import { clearCart } from "../../app/store/cartSlice";
 import { Order, OrderItem } from "../../../types/types";
+import LoginModal from "@/components/LoginModal";
 
 const ProfilePage: React.FC = () => {
   const { data: session, status } = useSession();
@@ -14,10 +15,13 @@ const ProfilePage: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const [orders, setOrders] = useState<Order[]>([]);
   const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {
     if (session?.user?.id) {
       fetchOrders(session.user.id);
+    } else {
+      setIsLoginModalOpen(true); // Show the login modal if the user is not logged in
     }
 
     const savedOrder = localStorage.getItem("currentOrder");
@@ -81,7 +85,12 @@ const ProfilePage: React.FC = () => {
 
   if (!session) {
     return (
-      <div className="text-center py-10">Vous n&apos;êtes pas connecté.</div>
+      <>
+        <div className="fixed text-center py-10 z-100 ">Vous n&apos;êtes pas connecté.</div>
+        {isLoginModalOpen && (
+          <LoginModal onClose={() => setIsLoginModalOpen(false)} />
+        )}
+      </>
     );
   }
 
@@ -176,6 +185,11 @@ const ProfilePage: React.FC = () => {
             </ul>
           )}
         </div>
+        
+        {isLoginModalOpen && (
+          <LoginModal onClose={() => setIsLoginModalOpen(false)} />
+        )}
+        
       </div>
     </div>
   );
