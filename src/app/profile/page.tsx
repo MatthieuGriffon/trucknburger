@@ -13,10 +13,16 @@ const ProfilePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
 
   useEffect(() => {
     if (session?.user?.id) {
       fetchOrders(session.user.id);
+    }
+
+    const savedOrder = localStorage.getItem("currentOrder");
+    if (savedOrder) {
+      setCurrentOrder(JSON.parse(savedOrder));
     }
   }, [session]);
 
@@ -27,6 +33,45 @@ const ProfilePage: React.FC = () => {
       setOrders(data);
     } else {
       console.error("Failed to fetch orders");
+    }
+  };
+
+  const handlePayment = async () => {
+    if (!session?.user || !currentOrder) {
+      return;
+    }
+
+    const orderData = {
+      userId: session?.user?.id,
+      status: "paid",
+      totalPrice: currentOrder.items.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      ),
+      items: currentOrder.items.map((item) => ({
+        menuItemId: item.id,
+        quantity: item.quantity,
+        price: item.price,
+      })),
+    };
+
+    const response = await fetch("/api/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderData),
+    });
+
+    if (response.ok) {
+      console.log("Order created successfully");
+      dispatch(clearCart());
+      localStorage.removeItem("currentOrder");
+      if (session?.user?.id) {
+        fetchOrders(session.user.id); // Fetch orders again to update the list
+      }
+    } else {
+      console.error("Failed to create order");
     }
   };
 
@@ -49,40 +94,6 @@ const ProfilePage: React.FC = () => {
         { timeZone: "Europe/Paris" }
       )
     : "N/A";
-
-  const handlePayment = async () => {
-    if (!session.user) {
-      return;
-    }
-
-    const orderData = {
-      userId: session.user.id,
-      status: 'paid',
-      totalPrice: cartItems.reduce((total, item) => total + item.price * item.quantity, 0),
-      items: cartItems.map(item => ({
-        menuItemId: item.id,
-        quantity: item.quantity,
-        price: item.price,
-        name: item.name,
-      })),
-    };
-
-    const response = await fetch('/api/orders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(orderData),
-    });
-
-    if (response.ok) {
-      console.log('Order created successfully');
-      dispatch(clearCart());
-      fetchOrders(session.user.id); // Fetch orders again to update the list
-    } else {
-      console.error('Failed to create order');
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gray-100 py-10">
@@ -109,13 +120,34 @@ const ProfilePage: React.FC = () => {
           >
             Se déconnecter
           </button>
-          <button
-            onClick={handlePayment}
-            className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700"
-          >
-            Passer au paiement
-          </button>
+          {currentOrder && (
+            <button
+              onClick={handlePayment}
+              className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700"
+            >
+              Passer au paiement
+            </button>
+          )}
         </div>
+        {currentOrder && (
+          <div className="mt-10">
+            <h2 className="text-2xl font-bold mb-4">Commande en cours</h2>
+            <ul>
+              {currentOrder.items.map((item, index) => (
+                <li key={index} className="mb-2">
+                  {item.quantity} x {item.name} @ {item.price} €
+                </li>
+              ))}
+            </ul>
+            <p className="mt-4">
+              <strong>Total:</strong>{" "}
+              {currentOrder.items
+                .reduce((total, item) => total + item.price * item.quantity, 0)
+                .toFixed(2)}{" "}
+              €
+            </p>
+          </div>
+        )}
         <div className="mt-10">
           <h2 className="text-2xl font-bold mb-4">Vos commandes</h2>
           {orders.length === 0 ? (
@@ -125,7 +157,10 @@ const ProfilePage: React.FC = () => {
               {orders.map((order) => (
                 <li key={order.id} className="mb-4">
                   <h3 className="text-xl font-semibold">
-                    Commande passée le {new Date(order.created_at).toLocaleString("fr-FR", { timeZone: "Europe/Paris" })}
+                    Commande passée le{" "}
+                    {new Date(order.created_at).toLocaleString("fr-FR", {
+                      timeZone: "Europe/Paris",
+                    })}
                   </h3>
                   <p>Status: {order.status}</p>
                   <p>Total: {order.total_price} €</p>

@@ -83,7 +83,7 @@ const CartPage: React.FC = () => {
         items,
         location: selectedLocation,
       };
-      console.log("Order Data:", orderData);
+      localStorage.setItem("currentOrder", JSON.stringify(orderData));
       router.push("/profile");
     }
   };
