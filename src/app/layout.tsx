@@ -1,9 +1,6 @@
 import "../styles/font.css";
 import "./globals.css";
 
-import "../styles/font.css";
-import "./globals.css";
-
 import type { Metadata } from "next";
 import ClientProvider from "../components/ClientProvider";
 import Header from "../components/Header";

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import pool from '@/lib/db';
 
 type Location = {
   id: number;
@@ -6,17 +7,26 @@ type Location = {
   lat: number;
   lng: number;
   time: string;
- 
 };
 
-const locations: Location[] = [
-    { id: 1, day: 'Lundi', lat: 47.341551, lng: -1.5285694, time: '2024-05-17T10:00:00Z' },
-    { id: 2, day : 'Mardi', lat: 47.297198, lng: -1.492123, time: '2024-05-17T12:00:00Z' },
-    { id: 3, day : 'Mercredi',lat: 47.311114, lng: -1.63115, time: '2024-05-17T14:00:00Z' },
-    { id: 4, day : 'Jeudi',lat: 47.293859, lng: -1.5508, time: '2024-05-17T16:00:00Z' },
-    { id: 5, day :'Vendredi',lat: 47.192182, lng: -1.547174, time: '2024-05-17T18:00:00Z' },
-];
-
+// Endpoint pour récupérer les emplacements
 export async function GET(request: NextRequest) {
-  return NextResponse.json(locations);
+  try {
+    const client = await pool.connect();
+    const result = await client.query('SELECT id, day, latitude AS lat, longitude AS lng, scheduled_at AS time FROM Locations');
+    client.release();
+
+    const locations: Location[] = result.rows.map((row) => ({
+      id: row.id,
+      day: row.day,
+      lat: parseFloat(row.lat),
+      lng: parseFloat(row.lng),
+      time: new Date(row.time).toISOString(),
+    }));
+
+    return NextResponse.json(locations);
+  } catch (error) {
+    console.error('Error fetching locations:', error);
+    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+  }
 }

@@ -26,7 +26,6 @@ const SignupPage: React.FC = () => {
     if (res.ok) {
       const data = await res.json();
       console.log('User created:', data);
-      // Rediriger ou effectuer une autre action après la création réussie de l'utilisateur
     } else {
       const errorData = await res.json();
       setError(errorData.message);

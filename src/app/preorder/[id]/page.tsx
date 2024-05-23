@@ -3,7 +3,6 @@ import "../../globals.css";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../store";
-import { setItem } from "../../store/orderSlice";
 import { addItem } from "../../store/cartSlice";
 import Image from "next/image";
 import PreOrderMenu from "../../../components/PreOrderMenu";

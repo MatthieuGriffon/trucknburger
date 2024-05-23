@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../store";
 import { removeItem, updateQuantity, updateDrink } from "../store/cartSlice";
@@ -9,12 +9,51 @@ import LoginModal from "../../components/LoginModal";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
+interface Location {
+  id: number;
+  day: string;
+  lat: number;
+  lng: number;
+  time: string;
+  address: string;
+  city: string;
+}
+
 const CartPage: React.FC = () => {
   const items = useSelector((state: RootState) => state.cart.items);
   const dispatch = useDispatch<AppDispatch>();
   const { data: session } = useSession();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [locations, setLocations] = useState<Location[]>([]);
+  const [selectedLocation, setSelectedLocation] = useState<string>("");
   const router = useRouter();
+
+  async function getCityName(lat: number, lng: number) {
+    const response = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+    );
+    const data = await response.json();
+    const addressComponents = data.results[0].address_components;
+    const cityComponent = addressComponents.find(
+      (component: { types: string | string[] }) =>
+        component.types.includes("locality")
+    );
+    return cityComponent ? cityComponent.long_name : "Unknown city";
+  }
+
+  useEffect(() => {
+    fetch("/api/locations")
+      .then((response) => response.json())
+      .then(async (data) => {
+        const locationsWithCityNames = await Promise.all(
+          data.map(async (location: Location) => {
+            const city = await getCityName(location.lat, location.lng);
+            return { ...location, city };
+          })
+        );
+        setLocations(locationsWithCityNames);
+      });
+  }, []);
 
   const handleRemoveItem = (id: string) => {
     dispatch(removeItem(id));
@@ -40,6 +79,11 @@ const CartPage: React.FC = () => {
     if (!session) {
       setIsLoginModalOpen(true);
     } else {
+      const orderData = {
+        items,
+        location: selectedLocation,
+      };
+      console.log("Order Data:", orderData);
       router.push("/profile");
     }
   };
@@ -124,6 +168,23 @@ const CartPage: React.FC = () => {
           </table>
           <div className="mt-4 text-right">
             <h2 className="text-xl font-bold">Total: {calculateTotal()} €</h2>
+          </div>
+          <div className="mt-4 text-right">
+            <label className="block text-lg font-bold mb-2 text-black">
+              Sélectionnez votre emplacement
+            </label>
+            <select
+              value={selectedLocation}
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              className="w-full text-black border rounded mb-4"
+            >
+              <option value="">Choisissez un emplacement</option>
+              {locations.map((location) => (
+                <option className="text-black" key={location.id} value={location.id}>
+                  {location.day} : {location.city}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="mt-4 text-right">
             <button
