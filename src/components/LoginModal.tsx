@@ -38,7 +38,7 @@ const LoginModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold mb-4 text-black">Connexion</h2>
+        <h2 className="text-2xl font-bold mb-4 text-black text-center">Connexion</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700">Email</label>
@@ -63,7 +63,7 @@ const LoginModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           {error && <div className="text-red-500 mb-4">{error}</div>}
           <button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-blue-800 text-white px-4 py-2 rounded hover:bg-blue-900 w-full mb-2"
           >
             Se connecter
           </button>
@@ -77,23 +77,23 @@ const LoginModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           </button>
           <button
             onClick={() => handleSocialSignIn("github")}
-            className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 w-full"
+            className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 w-full mb-2"
           >
             Se connecter avec GitHub
           </button>
         </div>
 
-        <p className="mt-4">
+        <p className="mt-4 w-full flex flex-col items-center text-black">
           Pas de compte ?{" "}
-          <a href="/signup" className="text-blue-500 hover:underline">
+          <a href="/signup" className="bg-green-800 text-white px-4 py-2 rounded hover:bg-green-900 w-full mb-2 text-center">
             Créer un compte
           </a>
         </p>
         <button
           onClick={onClose}
-          className="mt-4 text-gray-500 hover:underline"
+          className="mt-4 text-gray-500 w-full text-center bg-orange-500 text-white"
         >
-          Fermer
+          Quitter
         </button>
       </div>
     </div>
