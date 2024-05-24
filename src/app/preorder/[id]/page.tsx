@@ -6,6 +6,7 @@ import { RootState, AppDispatch } from "../../store";
 import { addItem } from "../../store/cartSlice";
 import Image from "next/image";
 import PreOrderMenu from "../../../components/PreOrderMenu";
+import { toast } from 'react-toastify';
 
 const PreOrderPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -33,6 +34,7 @@ const PreOrderPage = ({ params }: { params: { id: string } }) => {
           image: item.image,
         })
       );
+      toast.success(`${quantity} ${item.name} a été ajouté au panier!`);
     }
   };
 
@@ -51,11 +53,11 @@ const PreOrderPage = ({ params }: { params: { id: string } }) => {
         <p className="mb-2">{item.description}</p>
         <p className="mb-2">{item.price} €</p>
         <Image
-          className="flex w-full"
+          className="flex w-80 h-80 mx-auto" 
           src={item.image}
           alt={item.name}
-          width={200}
-          height={200}
+          width={120}
+          height={120}
         />
         <div>
           <label htmlFor={`quantity-${id}`}>Quantité: </label>
@@ -75,7 +77,7 @@ const PreOrderPage = ({ params }: { params: { id: string } }) => {
           Ajouter au panier
         </button>
       </div>
-      <div className="w-1/2 m-5 flex flex-col-reverse justify-between items-baseline flex-wrap text-xs text-center custom-preorder-menu-container">
+      <div className="w-1/2  flex flex-col-reverse justify-between items-baseline flex-wrap text-xs text-center custom-preorder-menu-container">
         <PreOrderMenu />
       </div>
     </div>

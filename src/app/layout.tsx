@@ -6,6 +6,8 @@ import ClientProvider from "../components/ClientProvider";
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata: Metadata = {
   title: "TrucknBurger",
@@ -25,6 +27,7 @@ export default function RootLayout({
           <Navbar />
           <main>{children}</main>
           <Footer />
+          <ToastContainer />
         </ClientProvider>
       </body>
     </html>
