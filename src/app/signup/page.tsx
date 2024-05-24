@@ -1,20 +1,24 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import backgroundHome from "../../../public/img/backgroundHome.webp"
 
 const SignupPage: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-  
-    const res = await fetch('/api/auth/signup', {
-      method: 'POST',
+
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email,
@@ -22,10 +26,9 @@ const SignupPage: React.FC = () => {
         name,
       }),
     });
-  
+
     if (res.ok) {
-      const data = await res.json();
-      console.log('User created:', data);
+      router.push("/profile");
     } else {
       const errorData = await res.json();
       setError(errorData.message);
@@ -33,9 +36,21 @@ const SignupPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10">
-      <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold mb-4">Créer un compte</h1>
+    <div className="py-10">
+       <Image
+          priority
+          placeholder="blur"
+          quality={100}
+          fill
+          src={backgroundHome}
+          alt="Background Page Home TrucknBurger"
+          style={{
+            objectFit: "cover",
+            zIndex: -1,
+          }}
+        />
+      <div className="max-w-md mx-auto bg-white/50 p-6 rounded-lg shadow-lg">
+        <h1 className="text-2xl font-bold mb-4 text-black">Créer un compte</h1>
         <form onSubmit={handleSignup}>
           <div className="mb-4">
             <label className="block text-gray-700">Nom</label>
@@ -74,6 +89,12 @@ const SignupPage: React.FC = () => {
           >
             S&apos;inscrire
           </button>
+          <div className="mt-4 bg-gray-500/90 text-black">
+            <p>
+              Vous pourrez entrer vos informations de connexion lors de la
+              prochaine étape après avoir terminé votre inscription.
+            </p>
+          </div>
         </form>
       </div>
     </div>

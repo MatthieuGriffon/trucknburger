@@ -6,7 +6,7 @@ import { addHours } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../app/store";
 import { clearCart } from "../../app/store/cartSlice";
-import { Order, OrderItem } from "../../../types/types";
+import { Order } from "../../../types/types";
 import LoginModal from "@/components/LoginModal";
 
 const ProfilePage: React.FC = () => {
@@ -18,17 +18,17 @@ const ProfilePage: React.FC = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {
-    if (session?.user?.id) {
+    if (status === "authenticated" && session?.user?.id) {
       fetchOrders(session.user.id);
-    } else {
-      setIsLoginModalOpen(true); // Show the login modal if the user is not logged in
+    } else if (status === "unauthenticated") {
+      setIsLoginModalOpen(true);
     }
 
     const savedOrder = localStorage.getItem("currentOrder");
     if (savedOrder) {
       setCurrentOrder(JSON.parse(savedOrder));
     }
-  }, [session]);
+  }, [status, session]);
 
   const fetchOrders = async (userId: string) => {
     const response = await fetch(`/api/orders?userId=${userId}`);
@@ -46,7 +46,7 @@ const ProfilePage: React.FC = () => {
     }
 
     const orderData = {
-      userId: session?.user?.id,
+      userId: session.user.id,
       status: "paid",
       totalPrice: currentOrder.items.reduce(
         (total, item) => total + item.price * item.quantity,
@@ -83,18 +83,16 @@ const ProfilePage: React.FC = () => {
     return <div className="text-center py-10">Loading...</div>;
   }
 
-  if (!session) {
+  if (status === "unauthenticated") {
     return (
       <>
-        <div className="fixed text-center py-10 z-100 ">Vous n&apos;êtes pas connecté.</div>
-        {isLoginModalOpen && (
-          <LoginModal onClose={() => setIsLoginModalOpen(false)} />
-        )}
+        <div className="fixed text-center py-10 z-100">Vous n&apos;êtes pas connecté.</div>
+        {isLoginModalOpen && <LoginModal onClose={() => setIsLoginModalOpen(false)} />}
       </>
     );
   }
 
-  const updatedAt = session.user?.updated_at;
+  const updatedAt = session?.user?.updated_at;
 
   const timeZoneOffset = 2;
   const formattedDate = updatedAt
@@ -107,15 +105,13 @@ const ProfilePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-100 py-10">
       <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg text-zinc-950">
-        <h1 className="text-3xl font-bold mb-4">
-          Profil de l&apos;utilisateur
-        </h1>
+        <h1 className="text-3xl font-bold mb-4">Profil de l&apos;utilisateur</h1>
         <div className="mb-4">
           <p className="text-lg">
-            <strong>Nom:</strong> {session.user?.name}
+            <strong>Nom:</strong> {session?.user?.name}
           </p>
           <p className="text-lg">
-            <strong>Email:</strong> {session.user?.email}
+            <strong>Email:</strong> {session?.user?.email}
           </p>
           <p className="text-lg">
             <strong>Dernière connexion le :</strong>
@@ -185,11 +181,7 @@ const ProfilePage: React.FC = () => {
             </ul>
           )}
         </div>
-        
-        {isLoginModalOpen && (
-          <LoginModal onClose={() => setIsLoginModalOpen(false)} />
-        )}
-        
+        {isLoginModalOpen && <LoginModal onClose={() => setIsLoginModalOpen(false)} />}
       </div>
     </div>
   );

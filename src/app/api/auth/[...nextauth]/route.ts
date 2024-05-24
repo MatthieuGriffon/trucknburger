@@ -10,9 +10,6 @@ import PostgresAdapter from "@auth/pg-adapter";
 
 dotenv.config();
 
-
-dotenv.config();
-
 interface Credentials {
   email: string;
   password: string;

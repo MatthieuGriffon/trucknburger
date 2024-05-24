@@ -21,7 +21,17 @@ const LoginModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
       setError("Invalid email or password");
     } else {
       onClose();
-      router.push("/profile"); // Rediriger vers la page de profil après connexion réussie
+      router.push("/profile");
+    }
+  };
+
+  const handleSocialSignIn = async (provider: string) => {
+    const res = await signIn(provider, { redirect: false });
+    if (res?.error) {
+      setError(`Error signing in with ${provider}`);
+    } else {
+      onClose();
+      router.push("/profile");
     }
   };
 
@@ -58,6 +68,21 @@ const LoginModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             Se connecter
           </button>
         </form>
+        <div className="mt-4">
+          <button
+            onClick={() => handleSocialSignIn("google")}
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700 w-full mb-2"
+          >
+            Se connecter avec Google
+          </button>
+          <button
+            onClick={() => handleSocialSignIn("github")}
+            className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 w-full"
+          >
+            Se connecter avec GitHub
+          </button>
+        </div>
+
         <p className="mt-4">
           Pas de compte ?{" "}
           <a href="/signup" className="text-blue-500 hover:underline">
