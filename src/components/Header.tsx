@@ -11,17 +11,17 @@ const Header: React.FC = () => {
 
   return (
     <header className="bg-[#d99153] p-2 flex flex-col sm:flex-row sm:justify-between sm:items-center">
-      <p className="text-sm sm:text-xl sm:flex-row-reverse text-white">
+      <p className="text-sm sm:text-xl sm:flex-row-reverse text-white md:text-xs">
         Bienvenue sur notre site ! 🍔
       </p>
       <div className="marquee-container mt-2 sm:mt-0">
-        <p className="text-xs sm:text-sm ml-0 sm:ml-50 marquee-text">
+        <p className="text-xs sm:text-sm ml-0 sm:ml-50 md:mr-1 marquee-text">
           🚀 Promo actuelle : 5% de réduction sur tous les burgers ! 🍔
         </p>
       </div>
       <div className="flex items-center mt-2 sm:mt-0">
-        <a href="/cart" className="text-sm sm:text-xl flex items-center">
-          <FaCartArrowDown className="mr-2" /> Votre panier contient {itemsCount} articles
+        <a href="/cart" className="text-sm sm:text-xl md:text-xs flex items-center">
+          <FaCartArrowDown className="mr-2 md:text-xs md:mr-1" /> Votre panier contient {itemsCount} articles
         </a>
       </div>
     </header>

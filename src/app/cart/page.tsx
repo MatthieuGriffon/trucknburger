@@ -89,14 +89,14 @@ const CartPage: React.FC = () => {
   };
 
   if (items.length === 0) {
-    return <div className="text-center py-10 text-xs">Votre panier est vide.</div>;
+    return <div className="text-center py-10 text-xs xl:text-xl">Votre panier est vide.</div>;
   }
 
   return (
     <div className="bg-[#D99153] min-h-screen text-xs">
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4 text-center text-xs">Votre Panier</h1>
-        <div className="overflow-x-auto text-xs">
+        <h1 className="text-2xl font-bold mb-4 text-center text-xs xl:text-4xl">Votre Panier</h1>
+        <div className="overflow-x-auto text-xs xl:text-2xl">
           <table className="min-w-full bg-[#eedfb5] border text-center">
             <thead>
               <tr>

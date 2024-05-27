@@ -47,7 +47,7 @@ const PreOrderPage = ({ params }: { params: { id: string } }) => {
   }
 
   return (
-    <div className="preorder-menu flex flex-col items-center bg-[#D99153] text-justify p-4">
+    <div className="preorder-menu flex flex-col items-center bg-[#D99153] text-justify p-4 xl:w-full xl:flex-row xl:justify-evenly">
       <div className="w-full max-w-md bg-[#D99153] flex flex-col text-center mb-8">
         <h1 className="text-xl mb-3">Pré-commander le {item.name}</h1>
         <p className="mb-2">{item.description}</p>

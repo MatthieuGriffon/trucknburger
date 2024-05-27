@@ -52,7 +52,7 @@ const PreOrderMenu: React.FC = () => {
       <h1 className="text-2xl md:text-3xl font-bold text-center mb-6 text-black">
         Nos Menus à Pré-commander
       </h1>
-      <div className="m-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="m-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:bg-red/500 ">
         {menus.map(menu => (
           <MenuCard
             key={menu.id}

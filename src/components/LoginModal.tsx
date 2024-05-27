@@ -36,7 +36,7 @@ const LoginModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 xl:text-xl">
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold mb-4 text-black text-center">Connexion</h2>
         <form onSubmit={handleSubmit}>
@@ -91,7 +91,7 @@ const LoginModal: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         </p>
         <button
           onClick={onClose}
-          className="mt-4 text-gray-500 w-full text-center bg-orange-500 text-white"
+          className="bg-orange-800 text-white px-4 py-2 rounded hover:bg-orange-900 w-full mb-2 text-center"
         >
           Quitter
         </button>
