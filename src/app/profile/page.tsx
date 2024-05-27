@@ -1,4 +1,5 @@
-"use client";
+'use client';
+
 import { useSession, signOut } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { addHours } from "date-fns";
@@ -15,6 +16,7 @@ const ProfilePage: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [showDemoAlert, setShowDemoAlert] = useState(false);
 
   useEffect(() => {
     if (status === "authenticated" && session?.user?.id) {
@@ -39,43 +41,13 @@ const ProfilePage: React.FC = () => {
     }
   };
 
-  const handlePayment = async () => {
-    if (!session?.user || !currentOrder) {
-      return;
-    }
+  const handlePayment = () => {
+    setShowDemoAlert(true);
+  };
 
-    const orderData = {
-      userId: session.user.id,
-      status: "paid",
-      totalPrice: currentOrder.items.reduce(
-        (total, item) => total + item.price * item.quantity,
-        0
-      ),
-      items: currentOrder.items.map((item) => ({
-        menuItemId: item.id,
-        quantity: item.quantity,
-        price: item.price,
-      })),
-    };
-
-    const response = await fetch("/api/orders", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(orderData),
-    });
-
-    if (response.ok) {
-      console.log("Order created successfully");
-      dispatch(clearCart());
-      localStorage.removeItem("currentOrder");
-      if (session?.user?.id) {
-        fetchOrders(session.user.id); // Fetch orders again to update the list
-      }
-    } else {
-      console.error("Failed to create order");
-    }
+  const handleDemoAlertClose = () => {
+    setShowDemoAlert(false);
+    signOut();
   };
 
   if (status === "loading") {
@@ -102,8 +74,8 @@ const ProfilePage: React.FC = () => {
     : "N/A";
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10">
-      <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg text-zinc-950">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg text-zinc-950 relative">
         <h1 className="text-3xl font-bold mb-4">Profil de l&apos;utilisateur</h1>
         <div className="mb-4">
           <p className="text-lg">
@@ -113,8 +85,7 @@ const ProfilePage: React.FC = () => {
             <strong>Email:</strong> {session?.user?.email}
           </p>
           <p className="text-lg">
-            <strong>Dernière connexion le :</strong>
-            {formattedDate}
+            <strong>Dernière connexion le :</strong> {formattedDate}
           </p>
         </div>
         <div className="flex justify-between items-center mt-6">
@@ -181,6 +152,23 @@ const ProfilePage: React.FC = () => {
           )}
         </div>
         {isLoginModalOpen && <LoginModal onClose={() => setIsLoginModalOpen(false)} />}
+        {showDemoAlert && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="bg-white p-4 border border-red-500 rounded bg-red-100 text-red-800 shadow-lg">
+              <h2 className="text-xl font-bold mb-2 h-full">Attention</h2>
+              <p>
+                Ceci est un site fictif créé pour des fins de démonstration. Aucune
+                commande réelle ne sera traitée.
+              </p>
+              <button
+                onClick={handleDemoAlertClose}
+                className="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700"
+              >
+                Se déconnecter
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

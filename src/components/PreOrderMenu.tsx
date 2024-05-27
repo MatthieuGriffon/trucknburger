@@ -52,7 +52,7 @@ const PreOrderMenu: React.FC = () => {
       <h1 className="text-2xl md:text-3xl font-bold text-center mb-6 text-black">
         Nos Menus à Pré-commander
       </h1>
-      <div className="m-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="m-4 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {menus.map(menu => (
           <MenuCard
             key={menu.id}
@@ -61,7 +61,7 @@ const PreOrderMenu: React.FC = () => {
             description={menu.description}
             price={menu.price}
             image={menu.image_url}
-            imageClassName="w-full h-48 md:w-[10rem] md:h-[10rem] rounded-xl object-cover"
+            imageClassName="w-full h-48 rounded-xl object-cover"
           />
         ))}
       </div>

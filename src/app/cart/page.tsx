@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -89,39 +89,40 @@ const CartPage: React.FC = () => {
   };
 
   if (items.length === 0) {
-    return <div className="text-center py-10">Votre panier est vide.</div>;
+    return <div className="text-center py-10 text-xs">Votre panier est vide.</div>;
   }
 
   return (
-    <div className="bg-[#D99153] min-h-screen">
+    <div className="bg-[#D99153] min-h-screen text-xs">
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4 text-center">Votre Panier</h1>
-        <div className="overflow-x-auto">
+        <h1 className="text-2xl font-bold mb-4 text-center text-xs">Votre Panier</h1>
+        <div className="overflow-x-auto text-xs">
           <table className="min-w-full bg-[#eedfb5] border text-center">
             <thead>
               <tr>
-                <th className="text-black py-2 px-4 border-b">Image</th>
+                <th className="text-black py-2 px-4 border-b hidden md:table-cell">Image</th>
                 <th className="text-black py-2 px-4 border-b">Nom</th>
-                <th className="text-black py-2 px-4 border-b">Description</th>
+                <th className="text-black py-2 px-4 border-b hidden md:table-cell">Description</th>
                 <th className="text-black py-2 px-4 border-b">Prix</th>
                 <th className="text-black py-2 px-4 border-b">Quantité</th>
                 <th className="text-black py-2 px-4 border-b">Boisson</th>
-                <th className="text-black py-2 px-4 border-b">Action</th>
+                <th className="text-black py-1 px-2 border-b">Action</th>
               </tr>
             </thead>
             <tbody>
               {items.map((item) => (
                 <tr key={item.id} className="hover:bg-gray-100">
-                  <td className="py-2 px-4 border-b text-black">
+                  <td className="py-2 px-4 border-b text-black hidden md:table-cell">
                     <Image
                       src={item.image}
                       alt={item.name}
                       width={100}
                       height={100}
+                      className="object-cover"
                     />
                   </td>
                   <td className="py-2 px-4 border-b text-black">{item.name}</td>
-                  <td className="py-2 px-4 border-b text-black">
+                  <td className="py-2 px-4 border-b text-black hidden md:table-cell">
                     {item.description}
                   </td>
                   <td className="py-2 px-4 border-b text-black">
@@ -144,7 +145,7 @@ const CartPage: React.FC = () => {
                       onChange={(e) =>
                         handleDrinkChange(item.id, e.target.value)
                       }
-                      className="w-3/4 text-black border rounded"
+                      className="w-full text-black border rounded"
                     >
                       <option value="">Choisissez une boisson</option>
                       <option value="eau">Eau</option>
@@ -159,7 +160,7 @@ const CartPage: React.FC = () => {
                       className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700"
                       onClick={() => handleRemoveItem(item.id)}
                     >
-                      Supprimer
+                      x
                     </button>
                   </td>
                 </tr>

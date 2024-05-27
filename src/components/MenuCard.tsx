@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../app/store';
-import { setItem } from  '../app/store/orderSlice';
+import { setItem } from '../app/store/orderSlice';
 import { useState } from "react";
 
 interface MenuCardProps {
@@ -41,8 +41,8 @@ const MenuCard: React.FC<MenuCardProps> = ({
   };
 
   return (
-    <div className="flex border rounded-lg overflow-hidden shadow-lg p-4 bg-[#d99153]">
-      <div className="flex-shrink-0">
+    <div className="flex flex-col sm:flex-row border rounded-lg overflow-hidden shadow-lg p-4 bg-[#d99153]">
+      <div className="flex-shrink-0 mb-4 sm:mb-0 sm:mr-4">
         <Image
           src={image}
           alt={name}
@@ -51,13 +51,13 @@ const MenuCard: React.FC<MenuCardProps> = ({
           height={150}
         />
       </div>
-      <div className="ml-4 flex-grow">
-        <h2 className="text-xl font-bold">{name}</h2>
+      <div className="flex-grow">
+        <h2 className="text-lg sm:text-xl font-bold">{name}</h2>
         <p className="text-gray-700">{description}</p>
         <p className="text-white font-semibold mb-2">{price} €</p>
         
         <button
-          className="flex justify-center w-[50%] m-auto mt-2 bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
+          className="mt-2 w-full sm:w-auto bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
           onClick={handlePreOrder}
         >
           Pré-commander
