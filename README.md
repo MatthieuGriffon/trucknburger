@@ -6,6 +6,8 @@
 Description:
 TrucknBurger is a dynamic web application for a fictional food truck specializing in homemade burgers. The project serves as an interactive portfolio showcasing my web development and SEO skills to potential clients. The website allows users to track the food truck's movements across different cities, view the menu, place orders online, and read the latest news and blog posts.
 
+- Live démo : https://trucknburger.vercel.app/
+
 ## Key Features:
 
 - Interactive Home Page: Displaying the food truck and its special homemade burgers.
@@ -29,3 +31,4 @@ TrucknBurger is a dynamic web application for a fictional food truck specializin
 - TypeScript: Superset of JavaScript providing static type definitions.
 - PostgreSQL: Relational database for storing data.
 - NextAuth.js: Authentication for user login and registration.
+
